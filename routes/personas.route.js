@@ -1,0 +1,66 @@
+const { Router } = require('express');
+const { check } = require('express-validator');
+const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut } = require('../controllers/personas.controller');
+const { idPersonaExiste, cedulaPersonaExiste } = require('../helpers/db_validators');
+const { validarCampo } = require('../middlewares/validar-campos');
+
+
+const router = Router();
+//manejo de rutas de edpoint
+// GET
+router.get('/persona', personasGet);
+
+// GET BY ID
+router.get('/persona/:pers_id', [
+    check('pers_id').custom(idPersonaExiste),
+    validarCampo
+], personasIdGet);
+
+// POST
+router.post('/persona', [
+    check('pers_identificacion', 'La cédula es obligatorio!').notEmpty(),
+    check('pers_identificacion', 'La cédula debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
+    check('pers_identificacion', 'La cédula debe tener solo numeros!').isNumeric(),
+    check('pers_nombres', 'El nombre es obligatorio!').notEmpty(),
+    check('pers_apellidos', 'El apellido es obligatorio!').notEmpty(),
+    check('pers_celular', 'El número celular es obligatorio!').notEmpty(),
+    check('pers_celular', 'El número celular debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
+    check('pers_celular', 'El número celular debe tener solo numeros!').isNumeric(),
+    check('pers_sexo', 'Este campo es obligatorio!').notEmpty(),
+    check('pers_fecha_nacimiento', 'La fecha de nacimiento es obligatorio!').notEmpty(),
+    check('pers_direccion', 'La dirección es obligatorio!').notEmpty(),
+    check('pers_identificacion').custom(cedulaPersonaExiste),
+    validarCampo
+], personasPost);
+
+// PUT
+
+router.put('/persona/:pers_id', [
+    check('pers_nombres', 'El nombre es obligatorio!').notEmpty(),
+    check('pers_apellidos', 'El apellido es obligatorio!').notEmpty(),
+    check('pers_celular', 'El número celular es obligatorio!').notEmpty(),
+    check('pers_celular', 'El número celular debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
+    check('pers_celular', 'El número celular debe tener solo numeros!').isNumeric(),
+    check('pers_sexo', 'Este campo es obligatorio!').notEmpty(),
+    check('pers_fecha_nacimiento', 'La fecha de nacimiento es obligatorio!').notEmpty(),
+    check('pers_direccion', 'La dirección es obligatorio!').notEmpty(),
+    check('pers_id').custom(idPersonaExiste),
+    validarCampo
+], personasPut);
+
+// ACTUALIZAR LA FOTO
+router.put('/persona/foto/:pers_id', [
+    check('pers_foto', 'La foto es obligatorio!').notEmpty(),
+    check('pers_id').custom(idPersonaExiste),
+    validarCampo
+], actualizarFotoPut);
+
+// DELETE
+router.delete('/persona/:pers_id', [
+    check('pers_id').custom(idPersonaExiste),
+    validarCampo
+], personasDelete);
+
+
+
+module.exports = router;
