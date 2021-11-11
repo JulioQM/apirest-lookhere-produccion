@@ -5,37 +5,31 @@ const { db_sequelize } = require("../database/connection");
 class Server {
 
     constructor() {
-        // inicializo express
-        this.app = express();
+            // inicializo express
+            this.app = express();
 
-        // puerto la que va correr el aplicativo
-        this.port = process.env.PORT;
-        // sirve para quitar o desautorizar el mensaje que se necesita un CERTIFICADO SSL
-        process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+            // puerto la que va correr el aplicativo
+            this.port = process.env.PORT;
+            // sirve para quitar o desautorizar el mensaje que se necesita un CERTIFICADO SSL
+            process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
-        // ruta del edpoint
-        this.usuarioPath = '/api/lookhere';
-        this.loginPath = '/api/autenticacion'
+            // ruta del edpoint
+            this.usuarioPath = '/api/lookhere';
+            this.loginPath = '/api/autenticacion'
 
 
-        // conectar a base de datos
-        //this.conectarDB();
-        this.dbConexion();
+            // conectar a base de datos
+            //this.conectarDB();
+            this.dbConexion();
 
-        //middleware direccionamiento a pagina estatica
-        this.middlewares();
+            //middleware direccionamiento a pagina estatica
+            this.middlewares();
 
-        //llamado a rutas
-        this.routes();
+            //llamado a rutas
+            this.routes();
 
-    }
-
-    // creo el metodo para llamar mi configuracion de la base de datos
-    /* conectarDB() {
-        config
-    } */
-
-    // creo el metodo para llamar mi configuracion de la base de datos con SEQUALIZE
+        }
+        // creo el metodo para llamar mi configuracion de la base de datos con SEQUALIZE
     async dbConexion() {
         try {
             await db_sequelize.authenticate();
