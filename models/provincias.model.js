@@ -33,10 +33,10 @@ const Provincia = db_sequelize.define('provincias', {
     timestamps: true,
 
     // I don't want createdAt
-    createdAt: 'rol_fecha_registro',
+    createdAt: 'prov_fecha_registro',
 
     // I want updatedAt to actually be called updateTimestamp
-    updatedAt: 'rol_fecha_actualizacion',
+    updatedAt: 'prov_fecha_actualizacion',
     db_sequelize,
 });
 
