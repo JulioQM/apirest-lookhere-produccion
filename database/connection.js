@@ -3,6 +3,7 @@ const db_sequelize = new Sequelize(process.env.DATABASE, process.env.USER, proce
     host: process.env.HOST,
     dialect: 'postgres',
     /* logging: false, */
+    ssl: true,
     omitNull: true,
     define: {
         "freezeTableName": true, // sirve para mantenerlos estaticos a los nombres de la tabla
