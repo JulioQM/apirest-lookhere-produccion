@@ -1,8 +1,9 @@
 node_modules/
 backup/
 control-backend/
-database/apis
+database/apis.js
 database/config
 database/provincias.json
 database/provincias.txt
 database/ciudades.txt
+.env
