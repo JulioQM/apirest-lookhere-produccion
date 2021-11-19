@@ -59,18 +59,7 @@ const Persona = db_sequelize.define('personas', {
         type: DataTypes.BIGINT
     },
     //:::::::::::::: SECCIÓN DE DATOS MEDICOS :::::::::::::::::
-    pers_tiene_medicacion: {
-        type: DataTypes.ENUM('No', 'Si'),
-        defaultValue: 'No'
-    },
-    pers_tiene_dosificacion: {
-        type: DataTypes.ENUM('No', 'Si'),
-        defaultValue: 'No'
-    },
-    pers_tiene_enfermedad: {
-        type: DataTypes.ENUM('No', 'Si'),
-        defaultValue: 'No'
-    },
+
     pers_desc_medicacion: {
         type: DataTypes.STRING,
         allowNull: true,
