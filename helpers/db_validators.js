@@ -8,6 +8,7 @@ const { Familiar } = require('../models/familiares.model');
 const { Persona } = require('../models/personas.model');
 const { Rol } = require('../models/roles.model');
 const { Usuario } = require('../models/usuarios.model');
+const { validarCedula } = require('./validarCedula');
 
 //:::::::::::::::::::: USUARIOS ::::::::::::::::::::::::::::::
 // Método que permite verificar si el correo existe en la BD
@@ -98,6 +99,20 @@ const cedulaPersonaExiste = async(cedula_persona = '') => {
         throw new Error(`Ya se encuentra registrado la persona con cedula ${cedula_persona}, ingrese otro cedula! `);
     }
 }
+const validacionCedula = async(cedula_persona = '') => {
+    await validarCedula(cedula_persona).then(result => {
+        if (result.verificar) {
+            throw new Error(` Cédula correcta `);
+        } else {
+            throw new Error(` Cédula incorrecta `);
+        }
+
+        // console.log(resultado);
+    });
+
+
+
+}
 module.exports = {
     // usuarios
     emailExiste,
@@ -113,6 +128,7 @@ module.exports = {
     idFamiliarExiste,
     // personas
     idPersonaExiste,
-    cedulaPersonaExiste
+    cedulaPersonaExiste,
+    validacionCedula
 
 };

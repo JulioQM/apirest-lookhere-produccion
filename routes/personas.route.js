@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut } = require('../controllers/personas.controller');
-const { idPersonaExiste, cedulaPersonaExiste } = require('../helpers/db_validators');
+const { idPersonaExiste, cedulaPersonaExiste, validacionCedula } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
 
 
@@ -30,6 +30,7 @@ router.post('/persona', [
     check('pers_fecha_nacimiento', 'La fecha de nacimiento es obligatorio!').notEmpty(),
     check('pers_direccion', 'La dirección es obligatorio!').notEmpty(),
     check('pers_identificacion').custom(cedulaPersonaExiste),
+    check('pers_identificacion').custom(validacionCedula),
     validarCampo
 ], personasPost);
 
