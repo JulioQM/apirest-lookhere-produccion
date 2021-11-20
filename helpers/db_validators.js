@@ -101,18 +101,14 @@ const cedulaPersonaExiste = async(cedula_persona = '') => {
 }
 const validacionCedula = async(cedula_persona = '') => {
     await validarCedula(cedula_persona).then(result => {
-        if (result.verificar) {
-            throw new Error(` Cédula correcta `);
-        } else {
+        if (!result.verificar) {
             throw new Error(` Cédula incorrecta `);
+        } else {
+            console.log('Cedula Correcta');
         }
-
-        // console.log(resultado);
     });
-
-
-
 }
+
 module.exports = {
     // usuarios
     emailExiste,
