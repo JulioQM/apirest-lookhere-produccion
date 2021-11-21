@@ -25,7 +25,8 @@ const Ciudad = db_sequelize.define('ciudades', {
     },
 
     ciud_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     ciud_estado: {

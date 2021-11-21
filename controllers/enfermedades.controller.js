@@ -27,11 +27,11 @@ const enfermedadesIdGet = async(req = request, res = response) => {
     }
 }
 
-//AGREGAR ROLES
+//AGREGAR ENFERMEDAD
 const enfermedadesPost = async(req, res = response) => {
     try {
-        const { enfer_nombre } = req.body;
-        const enfermedad = new Enfermedad({ enfer_nombre });
+        const { body } = req;
+        const enfermedad = new Enfermedad(body);
         const id = await enfermedad.save().then(result => {
             return result.enfer_id;
         });
@@ -48,12 +48,10 @@ const enfermedadesPost = async(req, res = response) => {
 const enfermedadesPut = async(req, res = response) => {
     try {
         const idenfermedad = req.params.enfer_id;
-        const { enfer_nombre } = req.body;
+        const { body } = req;
         const enfermedad = await Enfermedad.findByPk(idenfermedad);
-        await enfermedad.update({ enfer_nombre });
-        return res.status(200).json({
-            message: `Enfermedades ${enfer_nombre} actualizado`
-        });
+        await enfermedad.update(body);
+        return res.status(200).json({ enfermedad });
 
     } catch (error) {
         return res.status(500).json({

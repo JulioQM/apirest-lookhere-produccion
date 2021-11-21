@@ -16,7 +16,7 @@ router.get('/enfermedad/:enfer_id', [
 // POST
 router.post('/enfermedad', [
     check('enfer_nombre', 'El nombre es obligatorio!').notEmpty(),
-    check('enfer_nombre').custom(enfermedadExiste),
+    //check('enfer_nombre').custom(enfermedadExiste),
     validarCampo
 ], enfermedadesPost);
 // DELETE

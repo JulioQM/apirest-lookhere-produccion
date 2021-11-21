@@ -21,7 +21,8 @@ const Provincia = db_sequelize.define('provincias', {
     },
 
     prov_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     prov_estado: {

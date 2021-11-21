@@ -32,8 +32,10 @@ const personasPost = async(req, res = response) => {
     try {
         const { body } = req;
         const persona = new Persona(body);
-        await persona.save();
-        return res.status(200).json({ persona });
+        const id = await persona.save().then(result => {
+            return result.pers_id;
+        });;
+        return res.status(200).json({ id });
     } catch (error) {
         return res.status(500).json({
             message: `Error detectado: ${error}`

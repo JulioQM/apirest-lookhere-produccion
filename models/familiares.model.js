@@ -40,7 +40,8 @@ const Familiar = db_sequelize.define('familiares', {
     },
 
     famil_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     famil_estado: {

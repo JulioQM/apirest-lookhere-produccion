@@ -38,7 +38,7 @@ const Persona = db_sequelize.define('personas', {
         allowNull: false
     },
     pers_sexo: {
-        type: DataTypes.ENUM('M', 'S'),
+        type: DataTypes.ENUM('M', 'F'),
         allowNull: false,
         defaultValue: 'M'
     },
@@ -54,27 +54,9 @@ const Persona = db_sequelize.define('personas', {
         type: DataTypes.BIGINT
     },
 
-    //:::::::::::::: SECCIÓN DE DATOS DE CONTACTO FAMILIAR :::::::::::::::::
-    enfer_id: {
-        type: DataTypes.BIGINT
-    },
-    //:::::::::::::: SECCIÓN DE DATOS MEDICOS :::::::::::::::::
+    //:::::::::::::: SECCIÓN DE DATOS QR Y FOTO :::::::::::::::::
 
-    pers_desc_medicacion: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: 'Ninguno'
-    },
-    pers_desc_dosificacion: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: 'Ninguno'
-    },
-    pers_desc_enfermedad: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        defaultValue: 'Ninguno'
-    },
+
     pers_link_qr: {
         type: DataTypes.STRING,
     },
@@ -88,7 +70,8 @@ const Persona = db_sequelize.define('personas', {
     },
 
     pers_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     pers_estado: {

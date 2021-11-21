@@ -8,10 +8,28 @@ const Enfermedad = db_sequelize.define('enfermedades', {
         allowNull: false,
         primaryKey: true
     },
+    pers_id: {
+        type: DataTypes.BIGINT
+    },
 
     enfer_nombre: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    enfer_desc_medicacion: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'Ninguno'
+    },
+    enfer_desc_dosificacion: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'Ninguno'
+    },
+    enfer_desc_enfermedad: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: 'Ninguno'
     },
 
     enfer_fecha_registro: {
@@ -20,7 +38,8 @@ const Enfermedad = db_sequelize.define('enfermedades', {
     },
 
     enfer_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     enfer_estado: {

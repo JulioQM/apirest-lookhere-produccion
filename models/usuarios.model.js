@@ -27,11 +27,12 @@ const Usuario = db_sequelize.define('usuarios', {
 
     usua_fecha_registro: {
         type: DataTypes.DATE,
-        //allowNull: false
+        allowNull: false
     },
 
     usua_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     usua_estado: {

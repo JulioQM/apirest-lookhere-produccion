@@ -21,7 +21,8 @@ const Rol = db_sequelize.define('roles', {
     },
 
     rol_fecha_actualizacion: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: false
     },
 
     rol_estado: {
