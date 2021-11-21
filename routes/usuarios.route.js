@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const { usuariosPost, usuariosGet, usuariosIdGet, usuariosDelete, usuariosPut, loginUsuario } = require('../controllers/usuarios.controller');
 const { emailExiste, idUsuarioExiste, usuarioExiste } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
+const { usuarioValidatorPost } = require('../validator/usuario.validator');
 
 
 const router = Router();
@@ -17,15 +18,23 @@ router.get('/usuario/:usua_id', [
 ], usuariosIdGet);
 
 // POST
-router.post('/usuario', [
-    check('usua_alias', 'El nombre es obligatorio!').notEmpty(),
+router.post('/usuario'
+    /* , [
+        check('usua_alias', 'El nombre es obligatorio!').notEmpty(),
+        check('usua_alias').custom(usuarioExiste),
+        check('usua_email', 'El correo es obligatorio!').notEmpty(),
+        check('usua_email', 'No es un correo electrónico valido').isEmail(),
+        check('usua_email').custom(emailExiste),
+        check('usua_clave', 'La clave es obligatorio!').notEmpty(),
+        validarCampo
+    ] */
+    , usuariosPost);
+// validador
+router.post('/validarUsuario', [
     check('usua_alias').custom(usuarioExiste),
-    check('usua_email', 'El correo es obligatorio!').notEmpty(),
-    check('usua_email', 'No es un correo electrónico valido').isEmail(),
     check('usua_email').custom(emailExiste),
-    check('usua_clave', 'La clave es obligatorio!').notEmpty(),
     validarCampo
-], usuariosPost);
+], usuarioValidatorPost);
 
 // DELETE
 router.delete('/usuario/:usua_id', [

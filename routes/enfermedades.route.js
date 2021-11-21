@@ -14,11 +14,13 @@ router.get('/enfermedad/:enfer_id', [
     validarCampo
 ], enfermedadesIdGet);
 // POST
-router.post('/enfermedad', [
-    check('enfer_nombre', 'El nombre es obligatorio!').notEmpty(),
-    //check('enfer_nombre').custom(enfermedadExiste),
-    validarCampo
-], enfermedadesPost);
+router.post('/enfermedad'
+    /* , [
+        check('enfer_nombre', 'El nombre es obligatorio!').notEmpty(),
+        //check('enfer_nombre').custom(enfermedadExiste),
+        validarCampo
+    ] */
+    , enfermedadesPost);
 // DELETE
 router.delete('/enfermedad/:enfer_id', [
     check('enfer_id').custom(idEnfermedadExiste),

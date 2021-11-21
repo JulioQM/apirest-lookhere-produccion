@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut } = require('../controllers/personas.controller');
 const { idPersonaExiste, cedulaPersonaExiste, validacionCedula } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
+const { entidadValidatorPost } = require('../validator/identidad.validator');
 
 
 const router = Router();
@@ -17,22 +18,31 @@ router.get('/persona/:pers_id', [
 ], personasIdGet);
 
 // POST
-router.post('/persona', [
-    check('pers_identificacion', 'La cédula es obligatorio!').notEmpty(),
-    check('pers_identificacion', 'La cédula debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
-    check('pers_identificacion', 'La cédula debe tener solo numeros!').isNumeric(),
-    check('pers_nombres', 'El nombre es obligatorio!').notEmpty(),
-    check('pers_apellidos', 'El apellido es obligatorio!').notEmpty(),
-    check('pers_celular', 'El número celular es obligatorio!').notEmpty(),
-    check('pers_celular', 'El número celular debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
-    check('pers_celular', 'El número celular debe tener solo numeros!').isNumeric(),
-    check('pers_sexo', 'Este campo es obligatorio!').notEmpty(),
-    check('pers_fecha_nacimiento', 'La fecha de nacimiento es obligatorio!').notEmpty(),
-    check('pers_direccion', 'La dirección es obligatorio!').notEmpty(),
+router.post('/persona'
+    /* , [
+        check('pers_identificacion', 'La cédula es obligatorio!').notEmpty(),
+        check('pers_identificacion', 'La cédula debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
+        check('pers_identificacion', 'La cédula debe tener solo numeros!').isNumeric(),
+        check('pers_nombres', 'El nombre es obligatorio!').notEmpty(),
+        check('pers_apellidos', 'El apellido es obligatorio!').notEmpty(),
+        check('pers_celular', 'El número celular es obligatorio!').notEmpty(),
+        check('pers_celular', 'El número celular debe tener 10 dígitos!').isLength({ min: 10, max: 10 }),
+        check('pers_celular', 'El número celular debe tener solo numeros!').isNumeric(),
+        check('pers_sexo', 'Este campo es obligatorio!').notEmpty(),
+        check('pers_fecha_nacimiento', 'La fecha de nacimiento es obligatorio!').notEmpty(),
+        check('pers_direccion', 'La dirección es obligatorio!').notEmpty(),
+        check('pers_identificacion').custom(cedulaPersonaExiste),
+        check('pers_identificacion').custom(validacionCedula),
+        validarCampo
+    ] */
+    , personasPost);
+
+// Validador Entidad
+router.post('/validarPersona', [
     check('pers_identificacion').custom(cedulaPersonaExiste),
     check('pers_identificacion').custom(validacionCedula),
     validarCampo
-], personasPost);
+], entidadValidatorPost);
 
 // PUT
 
