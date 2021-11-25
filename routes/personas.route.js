@@ -44,6 +44,9 @@ router.post('/validarPersona', [
     validarCampo
 ], entidadValidatorPost);
 
+// otra mitad entidad
+router.post('/personaIdentidad', entidadValidatorPost);
+
 // PUT
 
 router.put('/persona/:pers_id', [
