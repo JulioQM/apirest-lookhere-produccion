@@ -57,7 +57,7 @@ const personaIdGetInnerJoin = async(req = request, res = response) => {
         console.log(pers_dia_nacimiento);
 
         return res.status(200).json({
-            persona: [{
+            persona: {
                 pers_identificacion,
                 pers_nombres,
                 pers_apellidos,
@@ -67,7 +67,7 @@ const personaIdGetInnerJoin = async(req = request, res = response) => {
                 prov_nombre,
                 ciud_nombre,
                 pers_direccion
-            }]
+            }
         })
     } catch (error) {
         return res.status(500).json({
