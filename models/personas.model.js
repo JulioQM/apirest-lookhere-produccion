@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { db_sequelize } = require('../database/connection');
-
+const { Provincia } = require('../models/provincias.model');
+const { Ciudad } = require('../models/ciudades.model');
 
 const Persona = db_sequelize.define('personas', {
 
@@ -90,5 +91,9 @@ const Persona = db_sequelize.define('personas', {
     updatedAt: 'pers_fecha_actualizacion',
     db_sequelize,
 });
+
+// Agrego relaciones
+Persona.Provincia = Persona.belongsTo(Provincia, { foreignKey: 'prov_id' });
+Persona.Ciudad = Persona.belongsTo(Ciudad, { foreignKey: 'ciud_id' });
 
 module.exports = { Persona };
