@@ -28,9 +28,58 @@ const personasIdGet = async(req = request, res = response) => {
     }
     // consultar mediante SQL INNER JOIN
 const personaIdGetInnerJoin = async(req = request, res = response) => {
+        try {
+            const idpersona = req.params.pers_id;
+            const persona = await Persona.findByPk(idpersona, {
+                include: [{
+                    association: Persona.Provincia
+                }, {
+                    association: Persona.Ciudad
+                }],
+            });
+
+            const {
+                pers_identificacion,
+                pers_nombres,
+                pers_apellidos,
+                pers_celular,
+                pers_fecha_nacimiento,
+                pers_sexo,
+                provincia: {
+                    prov_nombre
+                },
+                ciudade: {
+                    ciud_nombre
+                },
+                pers_direccion
+            } = persona.toJSON();
+            const pers_dia_nacimiento = pers_fecha_nacimiento.toLocaleDateString()
+            console.log(pers_dia_nacimiento);
+
+            return res.status(200).json({
+                persona: {
+                    pers_identificacion,
+                    pers_nombres,
+                    pers_apellidos,
+                    pers_celular,
+                    pers_dia_nacimiento,
+                    pers_sexo,
+                    prov_nombre,
+                    ciud_nombre,
+                    pers_direccion
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({
+                message: `Error detectado: ${error}`
+            });
+        }
+    }
+    // esto me va servir para coger el id del usuario, y luego visualizara  el id de la persona
+const usuarioIdGetInnerJoin = async(req = request, res = response) => {
     try {
-        const idpersona = req.params.pers_id;
-        const persona = await Persona.findByPk(idpersona, {
+        const id_usuario = req.params.usua_id;
+        const persona = await Persona.findByPk(id_usuario, {
             include: [{
                 association: Persona.Provincia
             }, {
@@ -68,13 +117,14 @@ const personaIdGetInnerJoin = async(req = request, res = response) => {
                 ciud_nombre,
                 pers_direccion
             }
-        })
+        });
     } catch (error) {
         return res.status(500).json({
             message: `Error detectado: ${error}`
         });
     }
 }
+
 
 //AGREGAR PERSONAS
 const personasPost = async(req, res = response) => {
@@ -146,5 +196,6 @@ module.exports = {
     personasPut,
     personasDelete,
     actualizarFotoPut,
-    personaIdGetInnerJoin
+    personaIdGetInnerJoin,
+    usuarioIdGetInnerJoin
 }

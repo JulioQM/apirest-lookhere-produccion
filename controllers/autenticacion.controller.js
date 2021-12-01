@@ -8,7 +8,7 @@ const login = async(req, res = response) => {
     try {
         const { usua_alias, usua_clave } = req.body;
         const usuario = await Usuario.findOne({ where: { usua_alias: usua_alias, usua_estado: '1' } });
-
+        const { usua_id } = usuario;
         if (!usuario) {
             return res.status(400).json({
                 message: 'Usuario / Contraseña, Usuario incorrecto'
@@ -23,8 +23,9 @@ const login = async(req, res = response) => {
             });
         }
         // Resultado final de autenticación
+        // message: 'Crendenciales correctas'
         return res.status(200).json({
-            message: 'Crendenciales correctas'
+            usua_id
         });
 
     } catch (error) {
