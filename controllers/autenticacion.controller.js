@@ -8,10 +8,10 @@ const login = async(req, res = response) => {
     try {
         const { usua_alias, usua_clave } = req.body;
         const usuario = await Usuario.findOne({ where: { usua_alias: usua_alias, usua_estado: '1' } });
-        const { usua_id } = usuario;
+
         if (!usuario) {
             return res.status(400).json({
-                message: 'Usuario / Contraseña, Usuario incorrecto'
+                message: 'Usuario incorrecto'
             });
         }
         // Des-encriptar la contraseña y verificar contraseña
@@ -19,7 +19,7 @@ const login = async(req, res = response) => {
         console.log(validarClave + '.........' + usua_clave + '-----------' + usua_clave)
         if (!validarClave) {
             return res.status(400).json({
-                message: 'Usuario / Contraseña, Contraseña incorrecta'
+                message: 'Contraseña incorrecta'
             });
         }
         // Resultado final de autenticación
