@@ -24,9 +24,8 @@ const login = async(req, res = response) => {
         }
         // Resultado final de autenticación
         // message: 'Crendenciales correctas'
-        return res.status(200).json({
-            usua_id
-        });
+        const { usua_id } = usuario;
+        return res.status(200).json({ usua_id });
 
     } catch (error) {
 
