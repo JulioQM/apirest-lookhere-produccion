@@ -11,7 +11,7 @@ const login = async(req, res = response) => {
 
         if (!usuario) {
             return res.status(400).json({
-                message: 'Usuario incorrecto'
+                message: 'El Usuario o la contraseña es incorrecta.'
             });
         }
         // Des-encriptar la contraseña y verificar contraseña
@@ -19,7 +19,7 @@ const login = async(req, res = response) => {
         console.log(validarClave + '.........' + usua_clave + '-----------' + usua_clave)
         if (!validarClave) {
             return res.status(400).json({
-                message: 'Contraseña incorrecta'
+                message: 'El Usuario o la contraseña es incorrecta.'
             });
         }
         // Resultado final de autenticación
