@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const { Persona } = require('../models/personas.model');
+const { Usuario } = require('../models/usuarios.model');
 
 
 //CONSULTARAN PERSONAS
@@ -79,15 +80,22 @@ const personaIdGetInnerJoin = async(req = request, res = response) => {
 const usuarioIdGetInnerJoin = async(req = request, res = response) => {
     try {
         const id_usuario = req.params.usua_id;
-        const persona = await Persona.findByPk(id_usuario, {
+        const persona = await Persona.findOne({
             include: [{
-                association: Persona.Provincia
-            }, {
-                association: Persona.Ciudad
-            }],
+                    association: Persona.Provincia
+                }, {
+                    association: Persona.Ciudad
+                },
+                {
+                    association: Persona.Usuario,
+                    where: { usua_id: id_usuario },
+                    required: true
+                }
+            ],
         });
 
         const {
+            usua_id,
             pers_identificacion,
             pers_nombres,
             pers_apellidos,
@@ -107,6 +115,7 @@ const usuarioIdGetInnerJoin = async(req = request, res = response) => {
 
         return res.status(200).json({
             persona: {
+                usua_id,
                 pers_identificacion,
                 pers_nombres,
                 pers_apellidos,

@@ -20,7 +20,7 @@ router.get('/persona/:pers_id', [
 router.get('/personaJoin/:pers_id',
     personaIdGetInnerJoin);
 // inner join , consumido por busqueda del usuario
-router.get('/personaNombreJoin/:usua_id', usuarioIdGetInnerJoin);
+router.get('/usuarioIdJoin/:usua_id', usuarioIdGetInnerJoin);
 // POST
 router.post('/persona'
     /* , [
