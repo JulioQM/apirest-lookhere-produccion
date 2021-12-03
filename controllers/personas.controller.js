@@ -95,6 +95,7 @@ const usuarioIdGetInnerJoin = async(req = request, res = response) => {
         });
 
         const {
+            pers_id,
             usua_id,
             pers_identificacion,
             pers_nombres,
@@ -115,6 +116,7 @@ const usuarioIdGetInnerJoin = async(req = request, res = response) => {
 
         return res.status(200).json({
             persona: {
+                pers_id,
                 usua_id,
                 pers_identificacion,
                 pers_nombres,
