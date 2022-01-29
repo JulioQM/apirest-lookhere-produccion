@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const { db_sequelize } = require("../database/connection");
 
@@ -15,7 +16,8 @@ class Server {
 
             // ruta del edpoint
             this.usuarioPath = '/api/lookhere';
-            this.loginPath = '/api/autenticacion'
+            this.loginPath = '/api/autenticacion';
+            this.uploadPath = '/api/upload';
 
 
             // conectar a base de datos
@@ -27,6 +29,8 @@ class Server {
 
             //llamado a rutas
             this.routes();
+            // Fileupload - Carga de archivos
+
 
         }
         // creo el metodo para llamar mi configuracion de la base de datos con SEQUALIZE
@@ -44,6 +48,8 @@ class Server {
     middlewares() {
         // uso de cors
         this.app.use(cors());
+        // uso del paquete de carga de archivos
+        this.app.use(fileUpload({ useTempFiles: true }));
         // lectura(texto) y parsea del body a un archivo json
         this.app.use(express.json());
         // direccionamiento a la página principal
@@ -62,6 +68,9 @@ class Server {
 
         // rutas de acceso
         this.app.use(this.loginPath, require('../routes/autenticacion.route'));
+
+        // ruta para carga de fotografias
+        this.app.use(this.uploadPath, require('../routes/uploads.route'));
 
     }
 
