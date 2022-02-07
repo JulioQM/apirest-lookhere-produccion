@@ -52,7 +52,8 @@ const personaIdGetInnerJoin = async(req = request, res = response) => {
                 ciudade: {
                     ciud_nombre
                 },
-                pers_direccion
+                pers_direccion,
+                pers_foto
             } = persona.toJSON();
             const pers_dia_nacimiento = pers_fecha_nacimiento.toLocaleDateString()
             console.log(pers_dia_nacimiento);
@@ -67,7 +68,8 @@ const personaIdGetInnerJoin = async(req = request, res = response) => {
                     pers_sexo,
                     prov_nombre,
                     ciud_nombre,
-                    pers_direccion
+                    pers_direccion,
+                    pers_foto
                 }
             })
         } catch (error) {
