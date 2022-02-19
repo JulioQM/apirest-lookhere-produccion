@@ -41,7 +41,15 @@ const actualizarImagenCloudinary = async(req, res = response) => {
         return res.status(400).json({ msg: "El formato de archivo es incorrecto." })
     }
     // des-estructuración de la ruta de la imagen, y organización en la carpeta
-    const { secure_url } = await cloudinary.uploader.upload(archivo.tempFilePath, { folder: "Fotografia-Identidad" });
+    const { secure_url } = await cloudinary.uploader.upload(archivo.tempFilePath, {
+        folder: "Fotografia-Identidad",
+        transformation: [
+            /* { width: 200, height: 200, radius: "max", crop: "fill" } */
+            { width: 2448, height: 3264, gravity: "faces", crop: "thumb" },
+            { radius: 80 }
+        ],
+        format: "png"
+    });
     // agrego a mi variable de foto la ruta de la imagen
     modelo.pers_foto = secure_url;
     // sincronizo y guardo en la base de datos de la tabla persona
