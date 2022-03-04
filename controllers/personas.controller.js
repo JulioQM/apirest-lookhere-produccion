@@ -179,7 +179,7 @@ const datosPerfil = async(req = request, res = response) => {
         // datos por parte de la tabla de familiares
         const famil_nombres = parseoJson['familiares'][0]['famil_nombres'];
         const famil_apellidos = parseoJson['familiares'][0]['famil_apellidos'];
-        const famil_nombresCompletos = famil_nombres + "" + famil_apellidos;
+        const famil_nombresCompletos = famil_nombres + " " + famil_apellidos;
         const famil_celular = parseoJson['familiares'][0]['famil_celular'];
         const famil_direccion = parseoJson['familiares'][0]['famil_direccion'];
         console.log(parseoJson['familiares']);
