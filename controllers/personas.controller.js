@@ -1,6 +1,8 @@
 const { response, request } = require('express');
 const { Persona } = require('../models/personas.model');
 const { Usuario } = require('../models/usuarios.model');
+const { Enfermedad } = require('../models/enfermedades.model');
+const { Familiar } = require('../models/familiares.model');
 
 
 //CONSULTARAN PERSONAS
@@ -140,6 +142,103 @@ const usuarioIdGetInnerJoin = async(req = request, res = response) => {
     }
 }
 
+// todos los datos de perfil de usuario
+/// valido datos extraidos de perfil
+const datosPerfil = async(req = request, res = response) => {
+    try {
+        const id_usuario = req.params.usua_id;
+        const pers = await Persona.findOne({
+            include: [
+
+                {
+                    association: Persona.Usuario,
+                    where: { usua_id: id_usuario },
+                    required: true
+                },
+                {
+                    association: Persona.Provincia
+                },
+                {
+                    association: Persona.Ciudad
+                },
+                {
+                    model: Enfermedad,
+                    required: true
+                },
+                {
+                    model: Familiar,
+                    required: true
+                }
+            ]
+
+        });
+        // en este apartado extraigo valores del json
+        const converJson = JSON.stringify(pers, null, 2);
+        // en esta parte convierto en un json, para extraer los datos
+        var parseoJson = JSON.parse(converJson);
+        // datos por parte de la tabla de familiares
+        const famil_nombres = parseoJson['familiares'][0]['famil_nombres'];
+        const famil_apellidos = parseoJson['familiares'][0]['famil_apellidos'];
+        const famil_nombresCompletos = famil_nombres + "" + famil_apellidos;
+        const famil_celular = parseoJson['familiares'][0]['famil_celular'];
+        const famil_direccion = parseoJson['familiares'][0]['famil_direccion'];
+        console.log(parseoJson['familiares']);
+        console.log(parseoJson['enfermedades']);
+        console.log(famil_celular);
+        // datos por parte de la tabla enfermedades
+        const enfer_nombre = parseoJson['enfermedades'][0]['enfer_nombre'];
+        const enfer_desc_medicacion = parseoJson['enfermedades'][0]['enfer_desc_medicacion'];
+        const enfer_desc_dosificacion = parseoJson['enfermedades'][0]['enfer_desc_dosificacion'];
+        const enfer_desc_enfermedad = parseoJson['enfermedades'][0]['enfer_desc_enfermedad'];
+
+        const {
+            pers_id,
+            usua_id,
+            pers_identificacion,
+            pers_nombres,
+            pers_apellidos,
+            pers_celular,
+            pers_fecha_nacimiento,
+            pers_sexo,
+            provincia: {
+                prov_nombre
+            },
+            ciudade: {
+                ciud_nombre
+            },
+            pers_direccion,
+            pers_foto,
+        } = pers;
+        const pers_dia_nacimiento = pers_fecha_nacimiento.toLocaleDateString()
+        return res.status(200).json({
+            persona: {
+                pers_id,
+                usua_id,
+                pers_identificacion,
+                pers_nombres,
+                pers_apellidos,
+                pers_celular,
+                pers_dia_nacimiento,
+                pers_sexo,
+                prov_nombre,
+                ciud_nombre,
+                pers_direccion,
+                pers_foto,
+                famil_nombresCompletos,
+                famil_celular,
+                famil_direccion,
+                enfer_nombre,
+                enfer_desc_medicacion,
+                enfer_desc_dosificacion,
+                enfer_desc_enfermedad
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: `Error detectado: ${error}`
+        });
+    }
+}
 
 //AGREGAR PERSONAS
 const personasPost = async(req, res = response) => {
@@ -212,5 +311,6 @@ module.exports = {
     personasDelete,
     actualizarFotoPut,
     personaIdGetInnerJoin,
-    usuarioIdGetInnerJoin
+    usuarioIdGetInnerJoin,
+    datosPerfil
 }

@@ -3,6 +3,8 @@ const { db_sequelize } = require('../database/connection');
 const { Provincia } = require('../models/provincias.model');
 const { Ciudad } = require('../models/ciudades.model');
 const { Usuario } = require('./usuarios.model');
+const { Enfermedad } = require('./enfermedades.model');
+const { Familiar } = require('./familiares.model');
 
 const Persona = db_sequelize.define('personas', {
 
@@ -97,5 +99,10 @@ const Persona = db_sequelize.define('personas', {
 Persona.Provincia = Persona.belongsTo(Provincia, { foreignKey: 'prov_id' });
 Persona.Ciudad = Persona.belongsTo(Ciudad, { foreignKey: 'ciud_id' });
 Persona.Usuario = Persona.belongsTo(Usuario, { foreignKey: 'usua_id' });
+// Son relaciones que sirven para la relacion con la tabla padre
+Persona.hasMany(Familiar, { foreignKey: 'pers_id' });
+Persona.hasMany(Enfermedad, { foreignKey: 'pers_id' });
+Familiar.belongsTo(Persona, { foreignKey: 'pers_id' });
+Enfermedad.belongsTo(Persona, { foreignKey: 'pers_id' });
 
 module.exports = { Persona };
