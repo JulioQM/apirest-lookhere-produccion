@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut, personaIdGetInnerJoin, usuarioIdGetInnerJoin, datosPerfil } = require('../controllers/personas.controller');
+const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut, personaIdGetInnerJoin, usuarioIdGetInnerJoin, datosPerfil, datosRegistroPerfil } = require('../controllers/personas.controller');
 const { idPersonaExiste, cedulaPersonaExiste, validacionCedula } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
 const { entidadValidatorPost } = require('../validator/identidad.validator');
@@ -22,7 +22,11 @@ router.get('/personaJoin/:pers_id',
 // inner join , consumido por busqueda del usuario
 router.get('/usuarioIdJoin/:usua_id', usuarioIdGetInnerJoin);
 // consultar todos los datos referentes al perfil
+// nota esto sucede en el fronted a lo que se autentica
 router.get('/datosPerfil/:usua_id', datosPerfil);
+// consultar todos los datos referentes al perfil
+// nota esto sucede en el fronted a lo que registra una cuenta
+router.get('/datosRegistroPerfil/:pers_id', datosRegistroPerfil);
 // POST
 router.post('/persona'
     /* , [
