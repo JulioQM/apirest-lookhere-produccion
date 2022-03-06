@@ -53,10 +53,16 @@ const usuariosPost = async(req, res = response) => {
 const usuariosPut = async(req, res = response) => {
     try {
         const idusuario = req.params.usua_id;
-        const usuario = await Usuario.findByPk(idusuario);
-        // proceso de actualizacion
+        // Parametros listo para proceso de actualizacion
         const { rol_id, usua_alias, usua_clave, usua_email } = req.body;
-        await usuario.update({ rol_id, usua_alias, usua_clave, usua_email });
+        const usuario = await Usuario.findByPk(idusuario);
+        // encriptacion de contraseña
+        // variable salt se refiere a las vueltas de encriptacion, entre mas vuelta mas seguro
+        const salt = bcrytpjs.genSaltSync();
+        // una vez pasado las verificaciones se guardara la información en la base de datos
+        usuario.usua_clave = bcrytpjs.hashSync(usua_clave, salt);
+
+        await usuario.update({ rol_id, usua_alias, usua_clave: usuario.usua_clave, usua_email });
         return res.status(200).json({
             message: `Usuario ${idusuario} actualizado exitosamente`
         });
