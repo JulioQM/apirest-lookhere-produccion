@@ -67,7 +67,7 @@ const Persona = db_sequelize.define('personas', {
     pers_foto: {
         type: DataTypes.STRING,
         // agregar foto por defecto, link de la foto cargado desde cloudinary
-        defaultValue: 'https://res.cloudinary.com/imagen-people/image/upload/v1646456393/Foto-porDefecto/avatar_perfil_wtf8vq.png'
+        defaultValue: 'https://res.cloudinary.com/imagen-people/image/upload/c_thumb,h_3264,w_2448/v1646533136/Foto-porDefecto/fondoAvatar_szzijn.png'
     },
 
     pers_fecha_registro: {
