@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 const { Usuario } = require('../models/usuarios.model');
 const bcrytpjs = require('bcryptjs');
+const { sendMailRegister } = require('../helpers/smsEmail');
 
 
 //CONSULTARN USUARIOS :::: LISTO
@@ -40,6 +41,10 @@ const usuariosPost = async(req, res = response) => {
         // una vez pasado las verificaciones se guardara la información en la base de datos
         usuario.usua_clave = bcrytpjs.hashSync(usua_clave, salt);
         const id = await usuario.save().then(result => { return result.usua_id });
+        // en esta parte voy a enviar el correo eléctronico
+        await sendMailRegister(usua_email);
+        // imprimo
+        console.log(usua_email);
         return res.status(200).json({ id });
 
     } catch (error) {
