@@ -2,13 +2,14 @@
  destinadas a servir de ayuda a otros procesos. Un Helper se compone de funciones 
  genéricas que se encargan de realizar  acciones complementarias, aplicables a 
  cualquier elemento de un sistema. */
-
 const { Enfermedad } = require('../models/enfermedades.model');
 const { Familiar } = require('../models/familiares.model');
 const { Persona } = require('../models/personas.model');
 const { Rol } = require('../models/roles.model');
 const { Usuario } = require('../models/usuarios.model');
 const { validarCedula } = require('./validarCedula');
+const { validarEmail } = require('./validarEmail');
+const { validarTelefono } = require('./validarTelefono');
 
 //:::::::::::::::::::: USUARIOS ::::::::::::::::::::::::::::::
 // Método que permite verificar si el correo existe en la BD
@@ -18,6 +19,17 @@ const emailExiste = async(correo = '') => {
     if (emailExiste) {
         throw new Error(`El correo electrónico ${correo} ya se encuentra registrado, ingrese otro correo!`)
     }
+}
+
+// verificar correo veridico, peticion 50 por dia en 24 horas
+const emailVerificador = async(correo = '') => {
+    await validarEmail(correo).then(result => {
+        if (!result.verificar) {
+            throw new Error(`Email incorrecto, ingrese otro correo electrónico`);
+        } else {
+            console.log('Email Correcta');
+        }
+    });
 }
 
 // Método que permite verificar si el alias o usuario existe en la BD
@@ -39,7 +51,6 @@ const idUsuarioExiste = async(idusuario = '') => {
 }
 
 //:::::::::::::::::::: ROLES ::::::::::::::::::::::::::::::
-
 // Método que permite verificar si el nombre del rol existe en la BD
 const rolExiste = async(rol_nombre = '') => {
     const rolExiste = await Rol.findOne({ where: { rol_nombre: rol_nombre, rol_estado: '1' } });
@@ -78,13 +89,15 @@ const idEnfermedadExiste = async(idenfermedad = '') => {
 //:::::::::::::::::::: FAMILIARES ::::::::::::::::::::::::::::::
 // Método que permite verificar si el ID existe en la BD
 const idFamiliarExiste = async(idfamiliar = '') => {
-        //verificar si existe el id de familiar
-        const idExiste = await Familiar.findOne({ where: { famil_id: idfamiliar, famil_estado: '1' } });
-        if (!idExiste) {
-            throw new Error(`No se encuentra registrado el familiar con id ${idfamiliar}, ingrese otro id! `);
-        }
+    //verificar si existe el id de familiar
+    const idExiste = await Familiar.findOne({ where: { famil_id: idfamiliar, famil_estado: '1' } });
+    if (!idExiste) {
+        throw new Error(`No se encuentra registrado el familiar con id ${idfamiliar}, ingrese otro id! `);
     }
-    //:::::::::::::::::::: PERSONAS ::::::::::::::::::::::::::::::
+}
+
+//:::::::::::::::::::: PERSONAS ::::::::::::::::::::::::::::::
+// Método que permite verificar si el ID existe en la BD
 const idPersonaExiste = async(idpersona = '') => {
     //verificar si existe el id de persona
     const idExiste = await Persona.findOne({ where: { pers_id: idpersona, pers_estado: '1' } });
@@ -92,19 +105,34 @@ const idPersonaExiste = async(idpersona = '') => {
         throw new Error(`No se encuentra registrado la persona con id ${idpersona}, ingrese otro id! `);
     }
 }
+
+// Método que permite verificar si la cédula existe en la BD
 const cedulaPersonaExiste = async(cedula_persona = '') => {
     const cedulaExiste = await Persona.findOne({ where: { pers_identificacion: cedula_persona, pers_estado: '1' } });
     console.log(cedulaExiste + '............')
     if (cedulaExiste) {
-        throw new Error(`Ya se encuentra registrado la persona con cedula ${cedula_persona}, ingrese otro cedula! `);
+        throw new Error(`Ya se encuentra registrado la persona con cédula ${cedula_persona}, ingrese otra cédula! `);
     }
 }
+
+// Método que permite verificar si la cédula es auténtica
 const validacionCedula = async(cedula_persona = '') => {
     await validarCedula(cedula_persona).then(result => {
         if (!result.verificar) {
-            throw new Error(` Cédula incorrecta `);
+            throw new Error(` Cédula incorrecta, ingrese otra cédula`);
         } else {
             console.log('Cedula Correcta');
+        }
+    });
+}
+
+// Método que permite verificar si el teléfono es auténtico
+const telefonoVerificador = async(numeroCell = '') => {
+    await validarTelefono(numeroCell).then(result => {
+        if (!result.verificar) {
+            throw new Error(` Número telefónico incorrecto, ingrese otro número telefónico`);
+        } else {
+            console.log('Número telefónico Correcto');
         }
     });
 }
@@ -114,6 +142,7 @@ module.exports = {
     emailExiste,
     idUsuarioExiste,
     usuarioExiste,
+    emailVerificador,
     // roles
     rolExiste,
     idRolExiste,
@@ -125,6 +154,7 @@ module.exports = {
     // personas
     idPersonaExiste,
     cedulaPersonaExiste,
-    validacionCedula
+    validacionCedula,
+    telefonoVerificador
 
 };

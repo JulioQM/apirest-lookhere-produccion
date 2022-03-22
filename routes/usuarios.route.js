@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { usuariosPost, usuariosGet, usuariosIdGet, usuariosDelete, usuariosPut } = require('../controllers/usuarios.controller');
-const { emailExiste, idUsuarioExiste, usuarioExiste } = require('../helpers/db_validators');
+const { emailExiste, idUsuarioExiste, usuarioExiste, emailVerificador } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
 const { usuarioValidatorPost } = require('../validator/usuario.validator');
 
@@ -31,8 +31,9 @@ router.post('/usuario'
     , usuariosPost);
 // validador
 router.post('/validarUsuario', [
-    check('usua_alias').custom(usuarioExiste),
-    check('usua_email').custom(emailExiste),
+    check('usua_alias').custom(usuarioExiste), // si existe en la base
+    check('usua_email').custom(emailExiste), // si existe en la base
+    check('usua_email').custom(emailVerificador), // si existe en los servidores de correo
     validarCampo
 ], usuarioValidatorPost);
 

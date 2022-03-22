@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut, personaIdGetInnerJoin, usuarioIdGetInnerJoin, datosPerfil, datosRegistroPerfil } = require('../controllers/personas.controller');
-const { idPersonaExiste, cedulaPersonaExiste, validacionCedula } = require('../helpers/db_validators');
+const { idPersonaExiste, cedulaPersonaExiste, validacionCedula, telefonoVerificador } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
 const { entidadValidatorPost } = require('../validator/identidad.validator');
 
@@ -51,6 +51,7 @@ router.post('/persona'
 router.post('/validarPersona', [
     check('pers_identificacion').custom(cedulaPersonaExiste),
     check('pers_identificacion').custom(validacionCedula),
+    check('pers_celular').custom(telefonoVerificador),
     validarCampo
 ], entidadValidatorPost);
 
