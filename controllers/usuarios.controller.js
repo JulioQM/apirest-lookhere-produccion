@@ -7,7 +7,7 @@ const { sendMailRegister } = require('../helpers/smsEmail');
 //CONSULTARN USUARIOS :::: LISTO
 const usuariosGet = async(req = request, res = response) => {
     try {
-        const usuario = await Usuario.findAll({ where: { usua_estado: '1' }, order: ['usua_id'] });
+        const usuario = await Usuario.findAll({ where: { usua_estado: '1', rol_id: '2' }, order: ['usua_id'] });
         return res.status(200).json({ usuario });
     } catch (error) {
         return res.status(500).json({
