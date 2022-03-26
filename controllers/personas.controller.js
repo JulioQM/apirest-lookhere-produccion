@@ -17,6 +17,34 @@ const personasGet = async(req = request, res = response) => {
     }
 }
 
+// LISTA DE ID QR
+const listaIdQRGet = async(req = request, res = response) => {
+    try {
+        const persona = await Persona.findAll({ where: { pers_estado: '1' }, order: ['pers_id'] });
+        // en este apartado extraigo valores del json
+        const converJson = JSON.stringify(persona, null, 2);
+        // en esta parte convierto en un json, para extraer los datos
+        var parseoJson = JSON.parse(converJson);
+        var areglo = [];
+        // agrego los valores en el array
+        for (const i in parseoJson) {
+            console.log(parseoJson[i]['pers_id']);
+            areglo.push(parseoJson[i]['pers_id']);
+        }
+        /* console.log(areglo);
+        if (areglo.includes(2)) {
+            console.log('TRUE')
+        } else {
+            console.log('FALSE')
+        } */
+        return res.status(200).json(areglo);
+    } catch (error) {
+        return res.status(500).json({
+            message: `Error detectado: ${error}`
+        });
+    }
+}
+
 //CONSULTAR POR ID PERSONAS
 const personasIdGet = async(req = request, res = response) => {
         try {
@@ -407,6 +435,7 @@ const actualizarFotoPut = async(req, res = response) => {
 
 module.exports = {
     personasGet,
+    listaIdQRGet,
     personasIdGet,
     personasPost,
     personasPut,

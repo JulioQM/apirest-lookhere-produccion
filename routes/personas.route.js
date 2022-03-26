@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut, personaIdGetInnerJoin, usuarioIdGetInnerJoin, datosPerfil, datosRegistroPerfil } = require('../controllers/personas.controller');
+const { personasGet, personasIdGet, personasPost, actualizarFotoPut, personasDelete, personasPut, personaIdGetInnerJoin, usuarioIdGetInnerJoin, datosPerfil, datosRegistroPerfil, listaIdQRGet } = require('../controllers/personas.controller');
 const { idPersonaExiste, cedulaPersonaExiste, validacionCedula, telefonoVerificador } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
 const { entidadValidatorPost } = require('../validator/identidad.validator');
@@ -10,6 +10,9 @@ const router = Router();
 //manejo de rutas de edpoint
 // GET
 router.get('/persona', personasGet);
+// lista de codigo QR
+// GET 
+router.get('/personaIdQR', listaIdQRGet);
 
 // GET BY ID
 router.get('/persona/:pers_id', [
