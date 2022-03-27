@@ -44,6 +44,11 @@ const Usuario = db_sequelize.define('usuarios', {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: '12345'
+    },
+    usua_codigo_cambiar_clave: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: '12345'
     }
 }, {
     // don't forget to enable timestamps!

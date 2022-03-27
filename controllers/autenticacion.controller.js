@@ -111,4 +111,75 @@ const validarCodigoVerificacion = async(req, res = response) => {
     }
 }
 
-module.exports = { loginUser, loginAdmin, validarCodigoVerificacion };
+// Método de enviar correo electronico con codigo de verificación
+const enviarCorreoCodigoVerificacion = async(req, res = response) => {
+    try {
+        const { usua_email } = req.body;
+        const usuario = await Usuario.findOne({
+            where: ({ usua_email: usua_email, usua_estado: '1', rol_id: 2 })
+        });
+        // verificar si existe usuario
+        if (!usuario) {
+            return res.status(400).json({
+                message: 'El correo es incorrecto, ingrese otro correo electrónico'
+            });
+        }
+        // desestructurar ID de usuario
+        const { usua_id } = usuario;
+        const usuario_actualizar = await Usuario.findByPk(usua_id);
+        // generacion de codigo aleatorio de 5 digitos
+        const decimalTranslator = short("0123456789");
+        const codigo5digitos = decimalTranslator.generate().substring(0, 5);
+        console.log(codigo5digitos);
+        // envia de código de verificacion a correo electrónico 
+        await sendMailAutentication(usuario.usua_email, codigo5digitos);
+        // encriptacion de contraseña
+        const salt = bcrytpjs.genSaltSync();
+        // una vez pasado las verificaciones se guardara la información en la base de datos
+        const codigoIncriptado = bcrytpjs.hashSync(codigo5digitos, salt);
+        // En este parte actualizo el campo cuyo objetivo es cambiar la clave, y le agrego la contraseña enviada por email
+        await usuario_actualizar.update({ usua_codigo_cambiar_clave: codigoIncriptado });
+        return res.status(200).json({ usua_id });
+    } catch (error) {
+        return res.status(500).json({
+            message: `Error detectado: ${error}`
+        });
+    }
+}
+
+// Método para resetear la clave de usuario, mediante el código de verificación enviada por email
+const resetearClave = async(req, res = response) => {
+    try {
+        const { usua_id, usua_codigo_cambiar_clave, usua_clave } = req.body;
+        const usuario = await Usuario.findByPk(usua_id);
+
+        // verificar si existe usuario con el id
+        if (!usuario) {
+            return res.status(400).json({
+                message: 'Id incorrecto '
+            });
+        }
+        // Des-encriptar la contraseña y verificar contraseña
+        const descriptarClave = bcryptjs.compareSync(usua_codigo_cambiar_clave, usuario.usua_codigo_cambiar_clave);
+        console.log(descriptarClave + '.........' + usua_codigo_cambiar_clave + '-----------' + usuario.usua_codigo_cambiar_clave);
+        if (!descriptarClave) {
+            return res.status(400).json({
+                message: 'Código de verificación incorrecto'
+            });
+        }
+        // encriptacion de  nueva contraseña
+        const salt = bcrytpjs.genSaltSync();
+        // una vez pasado las verificaciones se guardara la información en la base de datos
+        const codigoIncriptado = bcrytpjs.hashSync(usua_clave, salt);
+        // En este parte actualizo el campo cuyo objetivo es cambiar la clave.
+        const usuario_actualizar = await Usuario.findByPk(usua_id);
+        await usuario_actualizar.update({ usua_clave: codigoIncriptado });
+        return res.status(200).json({ usua_id });
+    } catch (error) {
+        return res.status(500).json({
+            message: `Error detectado: ${error}`
+        });
+    }
+}
+
+module.exports = { loginUser, loginAdmin, validarCodigoVerificacion, enviarCorreoCodigoVerificacion, resetearClave };
