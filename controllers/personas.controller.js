@@ -16,6 +16,24 @@ const personasGet = async(req = request, res = response) => {
         });
     }
 }
+const ubicacionGet = async(req = request, res = response) => {
+
+    try {
+        const ubicacion = [{
+            id: "1",
+            longitude: "-0.028",
+            latitude: "0.069",
+            description: "This is the description of POI#1",
+            name: "POI#1"
+        }];
+        console.log(ubicacion);
+        return res.status(200).json(ubicacion);
+    } catch (error) {
+        return res.status(500).json({
+            message: `Error detectado: ${error}`
+        });
+    }
+}
 
 // LISTA DE ID QR
 const listaIdQRGet = async(req = request, res = response) => {
@@ -445,4 +463,5 @@ module.exports = {
     usuarioIdGetInnerJoin,
     datosRegistroPerfil,
     datosPerfil,
+    ubicacionGet
 }
