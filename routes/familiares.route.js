@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { familiaresGet, familiaresIdGet, familiaresPost, familiaresDelete, familiaresPut } = require('../controllers/familiares.controller');
+const { familiaresGet, familiaresIdGet, familiaresPost, familiaresDelete, familiaresPut, familiaresIdPersonaGet } = require('../controllers/familiares.controller');
 const { idFamiliarExiste } = require('../helpers/db_validators');
 const { validarCampo } = require('../middlewares/validar-campos');
 
@@ -13,6 +13,11 @@ router.get('/familiar/:famil_id', [
     check('famil_id').custom(idFamiliarExiste),
     validarCampo
 ], familiaresIdGet);
+// GET BY ID PERSONA
+router.get('/familiarIdPersona/:pers_id', [
+    check('pers_id').custom(idFamiliarExiste),
+    validarCampo
+], familiaresIdPersonaGet);
 // POST
 router.post('/familiar'
     /* , [

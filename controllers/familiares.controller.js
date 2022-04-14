@@ -28,6 +28,20 @@ const familiaresIdGet = async(req = request, res = response) => {
 }
 
 
+//CONSULTAR FAMILIARES QUE PERTENECEN AL ID DE LA PERSONA
+const familiaresIdPersonaGet = async(req = request, res = response) => {
+    try {
+        const idpers = req.params.pers_id;
+        const familiar = await Familiar.findAll({ where: { pers_id: idpers } });
+        return res.status(200).json({ familiar });
+    } catch (error) {
+        return res.status(500).json({
+            message: `Error detectado: ${error}`
+        });
+    }
+}
+
+
 //AGREGAR FAMILIARES
 const familiaresPost = async(req, res = response) => {
     try {
@@ -78,6 +92,7 @@ const familiaresDelete = async(req, res = response) => {
 module.exports = {
     familiaresGet,
     familiaresIdGet,
+    familiaresIdPersonaGet,
     familiaresPost,
     familiaresPut,
     familiaresDelete
