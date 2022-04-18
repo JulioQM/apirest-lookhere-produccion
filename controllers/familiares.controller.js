@@ -32,7 +32,7 @@ const familiaresIdGet = async(req = request, res = response) => {
 const familiaresIdPersonaGet = async(req = request, res = response) => {
     try {
         const idpers = req.params.pers_id;
-        const familiar = await Familiar.findAll({ where: { pers_id: idpers } });
+        const familiar = await Familiar.findAll({ where: { pers_id: idpers }, order: ['famil_id'] });
         return res.status(200).json({ familiar });
     } catch (error) {
         return res.status(500).json({
